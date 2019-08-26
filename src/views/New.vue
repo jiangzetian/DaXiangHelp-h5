@@ -1,20 +1,10 @@
 <template>
 	<div id="new">
-        <!--评论悬浮窗-->
-		<div id="news_input_bg" v-show="news_bg_show">
-		  <div style="width: 100%;height: 100%;background:transparent;" @click="HindInput"></div>
-		  <div class="news_input_bottom">
-		    <div style="width: 90%;height:110px;padding: 15px;margin: 15px auto; background: #f5f6f8;">
-				<textarea placeholder="优质评论将会被优先显示" style="resize: none;display: block;width: 100%;height: 100%;">
-				</textarea>
-			</div>
-			  <v-btn depressed color="#0d76ff" dark class="my-4 mx-4" style="float: right;">发表</v-btn>
-		  </div>
-		</div>
         <!--海报悬浮窗-->
-        <div class="hb_imgbox" v-if="dataURL">
-            <img class="real_pic" :src="dataURL" width="100%"/>
-        </div>
+		<v-overlay  class="hb_imgbox" :value="dataURL">
+			<img class="real_pic" :src="dataURL" width="100%"/>
+			<v-icon @click="dataURL=''"  color="#fff" class="icon">close</v-icon>
+		</v-overlay>
         <!--海报节点-->
         <div class="hb">
             <div class="imageWrapper" ref="imageWrapper">
@@ -30,7 +20,7 @@
                             已解决
                         </div>
                         <div class="right_box">
-                            在长沙鑫广合4S店购买的新车出现三次故障，退车无门
+                            在长沙鑫广合4S店购买的新车出现三次故障，退车无门.
                         </div>
                     </v-card>
                     <p class="text">
@@ -152,6 +142,18 @@
 				<input placeholder="评论" readonly class="bottominput" type="text" @click="ShowInput"/>
 			</v-col>
 		</v-row>
+		<!--评论悬浮窗-->
+		<v-bottom-sheet v-model="news_bg_show">
+			<v-sheet class="text-center py-4" height="200px">
+				<div class="news_input_bottom">
+					<div style="width: 90%;height:110px;padding: 15px;margin: 0 auto; background: #f5f6f8;">
+				<textarea placeholder="优质评论将会被优先显示" style="resize: none;display: block;width: 100%;height: 100%;">
+				</textarea>
+					</div>
+					<v-btn depressed color="#0d76ff" dark class="my-4 mx-4" style="float: right;">发表</v-btn>
+				</div>
+			</v-sheet>
+		</v-bottom-sheet>
 	</div>
 </template>
 
@@ -175,11 +177,9 @@
 			ShowInput(){
 			  this.news_bg_show=true
 			},
-			HindInput(){
-			  this.news_bg_show=false
-			},
             toImage() {
                 html2canvas(this.$refs.imageWrapper,{
+					scale:2,
                     backgroundColor: null,
                     useCORS: true, // 允许图片跨域
                     taintTest: true, // 在渲染前测试图片
@@ -199,14 +199,6 @@
         padding: 0;
         margin: 0;
     }
-	#news_input_bg{
-	  position: fixed;
-	  z-index: 9999;
-	  width: 100%;
-	  max-width: 740px;
-	  height: 100%;
-	  background:rgba(0,0,0,0.5);
-	}
 	#news_input_bg .news_input_bottom{
 	  position: absolute;
 	  bottom: 0;
@@ -320,15 +312,20 @@
 	}
 /*    haibao*/
     .hb_imgbox{
-        max-width: 750px;
-        position: fixed;
-        background: rgba(0,0,0,0.5);
-        width: 100%;
-        height: 100%;
-        z-index: 999;
+		position: fixed;
     }
+	.hb_imgbox .icon{
+		width: 40px;
+		height: 40px;
+		font-size: 40px;
+		position: fixed;
+		bottom:15%;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
     .real_pic{
-        max-width: 750px;
+        max-width:750px;
         width: 85%;
         height: auto;
         position: fixed;
@@ -374,13 +371,16 @@
     .hb .hrader_title .right_box {
         display: inline-block;
         width: 80%;
-        height: 60px;
+		height: 60px;
         font-size: 18px;
         font-weight: 600;
+		overflow: hidden;
     }
     .hb .text{
+		padding: 15px;
         width: 100%;
-        padding: 15px;
+		height: 120px;
+		overflow: hidden;
         background: #fff;
         margin: 0;
     }

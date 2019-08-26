@@ -1,6 +1,11 @@
 <template>
 	<div class="user">
-		<v-img class="img" :src="require('../assets/user_banner.jpg')" :lazy-src="require('../assets/user_banner.jpg')" width="100%">
+		<v-img
+				class="img"
+				:src="require('../assets/user_banner.jpg')"
+				:lazy-src="require('../assets/user_banner.jpg')"
+				width="100%"
+		>
 		</v-img>
 		<v-card flat dark class="avatar">
 			<v-list-item>

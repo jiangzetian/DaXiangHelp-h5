@@ -11,7 +11,7 @@
       <published></published>
     </div>
     <div v-if="page_name=='message'" style="width: 100%;height: 100%;">
-      <message></message>
+      <messages></messages>
     </div>
     <div v-if="page_name=='history'" style="width: 100%;height: 100%;">
       <history></history>
@@ -25,7 +25,7 @@
 <script>
   import collection from '../components/collection'
   import published from '../components/published'
-  import message from '../components/message'
+  import messages from '../components/messages'
   import history from '../components/history'
   import help from '../components/help'
 export default {
@@ -38,7 +38,7 @@ export default {
   components: {
     'collection':collection,
     'published':published,
-    'message':message,
+    'messages':messages,
     'history':history,
     'help':help,
   },

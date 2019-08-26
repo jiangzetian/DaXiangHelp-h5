@@ -21,7 +21,7 @@
                             :style="i==touch_id?'right:100px':'right:0px'"
                     >
                         <v-row>
-                            <v-col :cols="4" class="py-0 " @click="goNew">
+                            <v-col :cols="4" class="py-0 " @click="goNew(i)">
                                 <v-list-item-content>
                                     <v-img
                                             :src="require('../assets/汽车.png')"
@@ -30,7 +30,7 @@
                                     ></v-img>
                                 </v-list-item-content>
                             </v-col>
-                            <v-col :cols="8" style="position: relative;padding: 0;" @click="goNew">
+                            <v-col :cols="8" style="position: relative;padding: 0;" @click="goNew(i)">
                                 <v-list-item-content >
                                     <p class="text">
                                         在长沙鑫广合4S店购买的新车出现三次故障，退车无门
@@ -62,8 +62,8 @@
             }
         },
         methods: {
-            goNew(){
-                this.$router.push('/new/1');
+            goNew(id){
+                this.$router.push('/changeshow/'+id);
             },
             del(id){
                 this.$router.push('/change/'+id);

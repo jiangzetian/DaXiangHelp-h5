@@ -9,7 +9,8 @@ import User from './views/User'
 import Details from './views/Details'
 import New from '@/views/New'
 import Change from '@/views/Change'
-import screenshot from '@/views/screenshot'
+import ChangeShow from '@/views/ChangeShow'
+import message from '@/views/message'
 import qqmap from '@/components/qqmap'
 
 Vue.use(Router)
@@ -73,14 +74,19 @@ export default new Router({
 			component: qqmap,
 		},
 		{
+			path: '/changeshow/:new_id',
+			name: 'changeshow',
+			component: ChangeShow,
+		},
+		{
 			path: '/change/:new_id',
 			name: 'change',
 			component: Change,
 		},
 		{
-			path: '/screenshot',
-			name: 'screenshot',
-			component: screenshot,
+			path: '/message/:message_id',
+			name: 'message',
+			component: message,
 		}
 	 ]
 })

@@ -6,10 +6,22 @@
 				知道了
 			</v-btn>
 		</v-snackbar>
+		<v-bottom-sheet v-model="flie_bg">
+			<v-sheet class="text-center py-4" height="auto">
+				<div style="width: 100%;height: 60px;line-height: 60px;" @click="fileClick('image')">照片</div>
+				<div style="width: 100%;height: 60px;line-height: 60px;" @click="fileClick('video')">视频</div>
+			</v-sheet>
+		</v-bottom-sheet>
 		<form>
 			<div class="top_box">
 				<textarea class="textarea" placeholder="请输入内容..." v-model="content"></textarea>
 				<v-row>
+					<div class="video_box" v-for="(v,i) in video_urls" :key="v.i">
+						<video controls width="100%" height="100%">
+							<source :src="v">
+						</video>
+						<v-icon @click="delVideo(i)"  color="#f00" class="icon">close</v-icon>
+					</div>
 					<div class="img_box" v-for="(v,i) in img_urls" :key="v.i">
 						<v-img
 								class="img"
@@ -21,14 +33,22 @@
 						</v-img>
 						<v-icon @click="delImg(i)"  color="#f00" class="icon">close</v-icon>
 					</div>
-					<div class="add_image" @click="fileClick">
+					<div class="add_image" @click="filePicker">
 						<input
+								accept="image/*"
 								type="file"
 								value
-								id="file"
+								id="file_image"
 								multiple="multiple"
-								@change="addImg"
-								placeholder="添加图片"
+								@change="addImage"
+						/>
+						<input
+								accept="video/*"
+								type="file"
+								value
+								id="file_video"
+								multiple="multiple"
+								@change="addVideo"
 						/>
 					</div>
 				</v-row>
@@ -141,6 +161,11 @@
 				//上传图片返回的路径 数组
 				img_data:[],
 				img_urls:[],
+				//上传视频返回的路径 数组
+				video_data:[],
+				video_urls:[],
+
+				flie_bg:false,
 				text: '',
 				snackbar: false,
 				snackbar_color: '#f00',
@@ -162,8 +187,16 @@
 			DatePicker
 		},
 		methods: {
-			fileClick(){
-				document.getElementById('file').click();
+			filePicker(){
+				this.flie_bg=true;
+			},
+			fileClick(type){
+				if (type=='image'){
+					document.getElementById('file_image').click();
+				}
+				if (type=='video'){
+					document.getElementById('file_video').click();
+				}
 			},
 			delImg(id){
 				// console.log(id);
@@ -171,21 +204,35 @@
 				this.img_data.splice(id,1);
 				// console.log(this.img_urls);
 			},
-			addImg (files) {
+			delVideo(id){
+				// console.log(id);
+				this.video_urls.splice(id,1);
+				this.video_data.splice(id,1);
+				// console.log(this.img_urls);
+			},
+			addVideo(files){
+				console.log(files.target.files);
+				this.video_urls.push('https://mat1.gtimg.com/hn/jiangzetian/mjzs_2019-08-15/mjzs.mp4');
+				this.flie_bg=false;
+				this.snackbar = true;
+				this.snackbar_color = "#0d76ff";
+				this.text = "视频选择成功";
+			},
+			addImage (files) {
 				console.log(files.target.files.length);
 				if (files.target.files.length === 0) {
 					return false;
 				}
-				if (files.target.files.length > 4) {
+				if (files.target.files.length > 5) {
 					this.snackbar = true;
 					this.snackbar_color = "#f00";
-					this.text = "上传图片不能超过4张";
+					this.text = "上传图片不能超过5张";
 					return false;
 				}
-				if (this.img_data.length > 4) {
+				if (this.img_data.length > 5) {
 					this.snackbar = true;
 					this.snackbar_color = "#f00";
-					this.text = "上传图片不能超过4张";
+					this.text = "上传图片不能超过5张";
 					return false;
 				}
 				for (var i=0;i<=files.target.files.length;i++) {
@@ -212,6 +259,7 @@
 					// 		.then(response=>{
 					// 			console.log(response.data);
 					// 		})
+					this.flie_bg=false;
 					this.snackbar = true;
 					this.snackbar_color = "#0d76ff";
 					this.text = "图片选择成功";
@@ -388,6 +436,21 @@
 		height: 100px;
 		resize: none;
 		outline: none;
+	}
+	.video_box{
+		background: #000;
+		position: relative;
+		margin: 5px;
+		width:80%;
+		height:120px;
+		margin: 0 auto;
+	}
+	.video_box .icon{
+		position: absolute;
+		right:-5%;
+		top: -5%;
+		background: #f5f5f5;
+		border-radius: 100%;
 	}
 	.img_box{
 		position: relative;
